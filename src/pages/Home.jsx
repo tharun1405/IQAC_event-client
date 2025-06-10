@@ -27,27 +27,35 @@ const eventVenues = [
   "Main Auditorium", "MBA Semianar Hall", "Mechanical Seminar Hall", "CS/IS Seminar Hall", "AIT Seminar Hall", "AiGS Seminar Hall", "AIGS Open Arena", "Other"
 ];
 
-const CertificateRequestForm = () => {
+const EventRequestForm = () => {
   const dispatch = useDispatch();
   const isRequesting = useSelector((state) => state.certificate.isRequesting);
 
   const [certificateData, setCertificateData] = useState({
     eventType: '',
     othereventype: '',
+    eventName: '',
     email: '',
     department: '',
     eventcordinator: '',
     targetAudience: '',
     eventVenue: '',
     otherVenue: '',
-    eventobjective: ''
+    eventobjective: '',
+    rpname: '',
+    rpqualification: '',
+    rpoccupation: '',
+    rpexpertise: '',
+    rpexperience: ''
   });
 
   const [errors, setErrors] = useState({});
-  const [numResourcePersons, setNumResourcePersons] = useState(0);
-  const [resourcePersons, setResourcePersons] = useState([]);
 
-  const { email, eventType, othereventype, department, eventcordinator, targetAudience, eventVenue, otherVenue, eventobjective } = certificateData;
+  const {
+    email, eventType, othereventype, eventName, department, eventcordinator,
+    targetAudience, eventVenue, otherVenue, eventobjective,
+    rpname, rpqualification, rpoccupation, rpexpertise, rpexperience
+  } = certificateData;
 
   const handleUpdateValue = (key, value) => {
     if (key === 'eventType') {
@@ -59,36 +67,27 @@ const CertificateRequestForm = () => {
     }
   };
 
-  const handleNumResourcePersonsChange = (e) => {
-    const count = parseInt(e.target.value, 10) || 0;
-    setNumResourcePersons(count);
-    setResourcePersons(Array.from({ length: count }, () => ({
-      name: '',
-      qualification: '',
-      occupation: '',
-      expertise: '',
-      experience: ''
-    })));
-  };
-
-  const handleResourcePersonChange = (index, key, value) => {
-    const updated = [...resourcePersons];
-    updated[index][key] = value;
-    setResourcePersons(updated);
-  };
-
   const validateForm = () => {
     const errors = {};
     if (!department) errors.department = 'Department is required';
-    if (!eventcordinator) errors.eventcordinator = 'Event co-ordinator is required';
+    if (!eventcordinator.trim()) errors.eventcordinator = 'Event co-ordinator is required';
     if (!eventType) errors.eventType = 'Event type is required';
     if (eventType === "Other" && !othereventype.trim()) errors.othereventype = 'Event name is required';
+    if (!eventName.trim()) errors.eventName = 'Event name/topic is required';
     if (!targetAudience.trim()) errors.targetAudience = 'Target audience is required';
     if (!eventVenue) errors.eventVenue = 'Event venue is required';
     if (eventVenue === "Other" && !otherVenue.trim()) errors.eventVenue = 'Other event venue is required';
     if (!eventobjective.trim()) errors.eventobjective = 'Event objective is required';
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim() || !emailRegex.test(email)) errors.email = 'Invalid email address';
+
+    // Resource person validations
+    if (!rpname.trim()) errors.rpname = 'Resource person name is required';
+    if (!rpqualification.trim()) errors.rpqualification = 'Qualification is required';
+    if (!rpoccupation.trim()) errors.rpoccupation = 'Occupation is required';
+    if (!rpexpertise.trim()) errors.rpexpertise = 'Expertise is required';
+    if (!rpexperience) errors.rpexperience = 'Experience is required';
+
     return errors;
   };
 
@@ -102,19 +101,17 @@ const CertificateRequestForm = () => {
 
     const finalData = {
       ...certificateData,
-      othereventype: eventType === 'Other' ? othereventype : eventType,
+      eventType: eventType === 'Other' ? othereventype : eventType,
       eventVenue: eventVenue === 'Other' ? otherVenue : eventVenue,
-      resourcePersons
     };
 
     dispatch(requestCertificate(finalData));
 
     setCertificateData({
-      eventType: '', othereventype: '', email: '', department: '', eventcordinator: '',
-      targetAudience: '', eventVenue: '', otherVenue: '', eventobjective: ''
+      eventType: '', othereventype: '', eventName: '', email: '', department: '', eventcordinator: '',
+      targetAudience: '', eventVenue: '', otherVenue: '', eventobjective: '',
+      rpname: '', rpqualification: '', rpoccupation: '', rpexpertise: '', rpexperience: ''
     });
-    setNumResourcePersons(0);
-    setResourcePersons([]);
     setErrors({});
   };
 
@@ -136,10 +133,15 @@ const CertificateRequestForm = () => {
           {eventType === "Other" && (
             <>
               <label className='block text-gray-700 font-bold'>Enter Other Event Type</label>
-              <input type='text' value={othereventype} onChange={(e) => handleUpdateValue('othereventype', e.target.value)} placeholder='Enter event name' className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md' />
+              <input type='text' value={othereventype} onChange={(e) => handleUpdateValue('othereventype', e.target.value)} placeholder='Enter event type' className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md' />
               {errors.othereventype && <p className='text-red-500 text-sm'>{errors.othereventype}</p>}
             </>
           )}
+
+          {/* Event Name */}
+          <label className='block text-gray-700 font-bold'>Event Name/Topic</label>
+          <input type='text' value={eventName} onChange={(e) => handleUpdateValue('eventName', e.target.value)} className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md' />
+          {errors.eventName && <p className='text-red-500 text-sm'>{errors.eventName}</p>}
 
           {/* Department */}
           <label className='block text-gray-700 font-bold'>Organising Department</label>
@@ -149,17 +151,17 @@ const CertificateRequestForm = () => {
           </select>
           {errors.department && <p className='text-red-500 text-sm'>{errors.department}</p>}
 
-          {/* Event Co-ordinator */}
+          {/* Coordinator */}
           <label className='block text-gray-700 font-bold'>Event Co-ordinator</label>
           <input type='text' value={eventcordinator} onChange={(e) => handleUpdateValue('eventcordinator', e.target.value)} className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md' />
           {errors.eventcordinator && <p className='text-red-500 text-sm'>{errors.eventcordinator}</p>}
 
-          {/* Target Audience */}
+          {/* Audience */}
           <label className='block text-gray-700 font-bold'>Target Audience</label>
           <input type='text' value={targetAudience} onChange={(e) => handleUpdateValue('targetAudience', e.target.value)} className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md' />
           {errors.targetAudience && <p className='text-red-500 text-sm'>{errors.targetAudience}</p>}
 
-          {/* Event Venue */}
+          {/* Venue */}
           <label className='block text-gray-700 font-bold'>Event Venue</label>
           <select value={eventVenue} onChange={(e) => handleUpdateValue('eventVenue', e.target.value)} className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md'>
             <option value="">Choose Venue</option>
@@ -180,26 +182,20 @@ const CertificateRequestForm = () => {
           <input type='text' value={eventobjective} onChange={(e) => handleUpdateValue('eventobjective', e.target.value)} className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md' />
           {errors.eventobjective && <p className='text-red-500 text-sm'>{errors.eventobjective}</p>}
 
-          {/* Resource Persons */}
-          <label className='block text-gray-700 font-bold'>Number of Resource Person(s)</label>
-          <select value={numResourcePersons} onChange={handleNumResourcePersonsChange} className='w-full px-3 py-2 mb-4 border border-gray-300 rounded-md'>
-            <option value="0">None</option>
-            {[1, 2, 3, 4, 5].map(num => (
-              <option key={num} value={num}>{num}</option>
-            ))}
-          </select>
-
-
-          {resourcePersons.map((rp, index) => (
-            <fieldset key={index} className='border border-gray-300 p-4 mb-4 rounded'>
-              <legend className='text-sm font-semibold text-gray-700'>Resource Person {index + 1}</legend>
-              <input type='text' placeholder='Name' value={rp.name} onChange={(e) => handleResourcePersonChange(index, 'name', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
-              <input type='text' placeholder='Qualification' value={rp.qualification} onChange={(e) => handleResourcePersonChange(index, 'qualification', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
-              <input type='text' placeholder='Occupation' value={rp.occupation} onChange={(e) => handleResourcePersonChange(index, 'occupation', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
-              <input type='text' placeholder='Expertise In' value={rp.expertise} onChange={(e) => handleResourcePersonChange(index, 'expertise', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
-              <input type='number' placeholder='Years of Experience' value={rp.experience} onChange={(e) => handleResourcePersonChange(index, 'experience', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
-            </fieldset>
-          ))}
+          {/* Resource Person */}
+          <fieldset className='border border-gray-300 p-4 mb-4 rounded'>
+            <label className='block text-gray-700 font-bold'>Resource Person</label>
+            <input type='text' placeholder='Name' value={rpname} onChange={(e) => handleUpdateValue('rpname', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
+            {errors.rpname && <p className='text-red-500 text-sm'>{errors.rpname}</p>}
+            <input type='text' placeholder='Qualification' value={rpqualification} onChange={(e) => handleUpdateValue('rpqualification', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
+            {errors.rpqualification && <p className='text-red-500 text-sm'>{errors.rpqualification}</p>}
+            <input type='text' placeholder='Occupation' value={rpoccupation} onChange={(e) => handleUpdateValue('rpoccupation', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
+            {errors.rpoccupation && <p className='text-red-500 text-sm'>{errors.rpoccupation}</p>}
+            <input type='text' placeholder='Expertise In' value={rpexpertise} onChange={(e) => handleUpdateValue('rpexpertise', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
+            {errors.rpexpertise && <p className='text-red-500 text-sm'>{errors.rpexpertise}</p>}
+            <input type='number' placeholder='Years of Experience' value={rpexperience} onChange={(e) => handleUpdateValue('rpexperience', e.target.value)} className='w-full px-3 py-2 mt-2 border border-gray-300 rounded-md' />
+            {errors.rpexperience && <p className='text-red-500 text-sm'>{errors.rpexperience}</p>}
+          </fieldset>
 
           {/* Email */}
           <label className='block text-gray-700 font-bold'>Email</label>
@@ -214,4 +210,4 @@ const CertificateRequestForm = () => {
   );
 };
 
-export default CertificateRequestForm;
+export default EventRequestForm;

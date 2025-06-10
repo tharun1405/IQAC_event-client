@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import AdminDashboard from './pages/AdminDashboard';
-import CertificateRequestForm from './pages/Home';
+import IQACDashboard from './pages/IQACDashboard';
+import PrincipalDashboard from './pages/PrincipalDashboard';
+import EventRequestForm from './pages/Home';
 import { Provider } from 'react-redux';
 import store from './store/configureStore';
 
@@ -13,8 +14,9 @@ const App = () => {
       <Router>
         <Routes>
           <Route path='/' element={<Layout />}>
-            <Route index element={<CertificateRequestForm />} />
-            <Route path='master' element={<AdminDashboard />} />  {/* ✅ Fixed here */}
+            <Route index element={<EventRequestForm />} />
+            <Route path='iqac' element={<IQACDashboard />} />  {/* ✅ Fixed here */}
+            <Route path='admin' element={<PrincipalDashboard />} />
           </Route>
         </Routes>
 

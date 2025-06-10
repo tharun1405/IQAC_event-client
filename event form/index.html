@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="college-logo">
+                    <img src="assets/image/Acharya_Logo.png" alt="College Logo">
+                </div>
+                <div class="college-info">
+                    <h1>ACHARYA INSTITUTE OF GRADUATE STUDIES</h1>
+                    <p>(NAAC Re-Accredited 'A+' and Affiliated to Bengaluru City University)</p>
+                    <p>Soladevanahalli, Bengaluru-560107</p>
+                </div>
+            </div>
+        </header>
+        <div class="reference-academic">
+            <div>
+                <label for="referenceNo">Reference No:</label>
+                <input type="text" id="referenceNo" name="referenceNo">
+            </div>
+            <div>
+                <label for="academicYear">Academic Year:</label>
+                <select id="academicYear" name="academicYear">
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+        </div>
+        <h2 style="text-align: center;">Event Form</h2>
+        <form id="eventForm">
+            <table>
+                <tr>
+                    <td><label for="eventType">Event Type:</label></td>
+                    <td colspan="3">
+                        <select id="eventType" name="eventType" onchange="toggleOtherEventType()">
+                            <option value="select">Select Event</option>
+                            <option value="seminar">Seminar</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="fdp">FDP</option>
+                            <option value="edp">EDP</option>
+                            <option value="guest_lecture">Guest Lecture</option>
+                            <option value="fest">Fest</option>
+                            <option value="visit">Visit</option>
+                            <option value="awareness">Awareness</option>
+                            <option value="program">Program</option>
+                            <option value="club_activity">Club Activity</option>
+                            <option value="mou_activity">MoU Activity</option>
+                            <option value="extension_activity">Extension Activity</option>
+                            <option value="celebration">Celebration</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="competition">Competition</option>
+                            <option value="exhibition">Exhibition</option>
+                            <option value="faculty_seminar">Faculty Seminar</option>
+                            <option value="certificate_course">Certificate Course</option>
+                            <option value="orientation">Orientation</option>
+                            <option value="r&d">R&D</option>
+                            <option value="icc">ICC</option>
+                            <option value="ncc">NCC</option>
+                            <option value="nss">NSS</option>
+                            <option value="sports">Sports</option>
+                            <option value="training_program">Training Program</option>
+                            <option value="outbound_training">Outbound Training</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="text" id="otherEventType" name="otherEventType" placeholder="Specify other event type" style="display:none;">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="eventTopic">Topic:</label></td>
+                    <td colspan="3"><input type="text" id="eventTopic" name="eventTopic"></td>
+                </tr>
+                <tr>
+                    <td><label for="organizingDept">Name of Organizing Department:</label></td>
+                    <td colspan="3"><input type="text" id="organizingDept" name="organizingDept"></td>
+                </tr>
+                <tr>
+                    <td><label for="targetAudience">Target Audience:</label></td>
+                    <td colspan="3"><input type="text" id="targetAudience" name="targetAudience"></td>
+                </tr>
+                <tr>
+                    <td><label for="dateTime">Date and Time:</label></td>
+                    <td colspan="3"><input type="datetime-local" id="dateTime" name="dateTime"></td>
+                </tr>
+                <tr>
+                    <td><label for="venue">Venue:</label></td>
+                    <td colspan="3"><input type="text" id="venue" name="venue"></td>
+                </tr>
+                <tr>
+                    <td><label for="duration">Duration of the Event:</label></td>
+                    <td colspan="3"><input type="text" id="duration" name="duration"></td>
+                </tr>
+                <tr>
+                    <td><label for="eventObjective">Objective of the Event:</label></td>
+                    <td colspan="3"><input type="text" id="eventObjective" name="eventObjective"></td>
+                </tr>
+                <tr>
+                    <td rowspan="3"><label for="eventCoordinatorDept">Event Coordinator:</label></td>
+                    <td><label for="eventCoordinatorDept">a. Department:</label></td>
+                    <td colspan="2">
+                        <select id="eventCoordinatorDept" name="eventCoordinatorDept">
+                            <option value="select">Select Department</option>
+                            <option value="BCA">Department of Computer Application</option>
+                            <option value="B.Com">Department of Commerce</option>
+                            <option value="BBA">Department of Business Administration</option>
+                            <option value="BSW">Department of Social Wor</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="eventCoordinatorName">b. Name:</label></td>
+                    <td colspan="2"><input type="text" id="eventCoordinatorName" name="eventCoordinatorName"></td>
+                </tr>
+                <tr>
+                    <td><label for="eventCoordinatorNo">c. Event No:</label></td>
+                    <td colspan="2"><input type="text" id="eventCoordinatorNo" name="eventCoordinatorNo"></td>
+                </tr>
+                <tr>
+                    <td><label>Resource Person Details:</label></td>
+                    <td colspan="3">
+                        <table>
+                            <tr>
+                                <td><label for="resourcePersonName">Name:</label></td>
+                                <td><input type="text" id="resourcePersonName" name="resourcePersonName"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="resourcePersonQualification">Qualification:</label></td>
+                                <td><input type="text" id="resourcePersonQualification" name="resourcePersonQualification"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="resourcePersonOccupation">Occupation:</label></td>
+                                <td><input type="text" id="resourcePersonOccupation" name="resourcePersonOccupation"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="resourcePersonExpertise">Expert in:</label></td>
+                                <td><input type="text" id="resourcePersonExpertise" name="resourcePersonExpertise"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="resourcePersonExperience">Years of Experience:</label></td>
+                                <td><input type="text" id="resourcePersonExperience" name="resourcePersonExperience"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="enclosures">Enclosures Required:</label></td>
+                    <td colspan="3">
+                        <p>1. Circular</p>
+                        <p>2. Invite Letter / Permissoin Letter</p>
+                        <p>3. Acceptance Letter</p>
+                        <p>4. Broucher / Poster</p>
+                        <p>5. Report in Prescribed Formate</p>
+                        <p>6. Student Attendance Sheet</p>
+                        <p>7. Feedback Form</p>
+                        <p>8. Copy of CV(Resource Person)</p>
+                        <p>9. Budget Copy / Apprication Letter / Certificate (If Any)</p>
+                    </td>
+                </tr>
+            </table>
+            <p><b>Note:</b> Organizers are required to Email the Verified Soft copy of the 
+                Event Report <u><b>within span of 3 days</b></u> of the event (without fail) to 
+                <u>iqac.aigs@acharya.ac.in</u> and <u>patoprincipalaigs@acharya.ac.in</u></p>
+        </form>
+        <button type="button" onclick="printForm()"><b>Print Form</b></button>
+    </div>
+    <script>
+        function printForm() {
+            var printContents = document.getElementById('printableArea').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

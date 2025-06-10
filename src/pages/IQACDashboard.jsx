@@ -96,7 +96,7 @@ const IQACDashboard = () => {
             <tbody className='text-center'>
               {certificates.length > 0 ? certificates.map((certificate) => (
                 <tr key={certificate._id}>
-                  <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{certificate.rpname}</td>
+                  <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{certificate.eventcordinator}</td>
                   <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{certificate.department}</td>
                   <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{certificate.othereventype || certificate.eventType}</td>
                   <td className='border-2 border-gray-400 px-2 sm:px-4 py-2'>{certificate.eventVenue}</td>

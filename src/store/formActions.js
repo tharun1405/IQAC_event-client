@@ -99,7 +99,7 @@ export const adminapprove = createAsyncThunk(
       const generateCertificate = {  email, eventType, eventName, department,
       rpname, verID };
       await api.put( `/api/certificates/create/${ _id }`, generateCertificate );
-      sweetAlert( { text: 'Event generated successfully.' } );
+      sweetAlert( { text: 'Event issued successfully.' } );
       // Dispatch fetchCertificateData to update both requests and certificates
       await dispatch( fetchRequestsAndCertificates() );
     } catch ( error ) {

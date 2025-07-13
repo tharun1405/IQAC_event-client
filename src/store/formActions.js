@@ -12,7 +12,7 @@ export const requestCertificate = createAsyncThunk(
       const response = await api.post( '/api/certificates/request', {  email, eventType, othereventype, eventName, department, eventcordinator,
     targetAudience, eventVenue, otherVenue, eventobjective,
     rpname, rpqualification, rpoccupation, rpexpertise, rpexperience} );
-      sweetAlert( { text: 'Your certificate request has been submitted successfully.' } );
+      sweetAlert( { text: 'Your event request has been submitted successfully.' } );
       return response.data;
     } catch ( error ) {
       sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error' } );
@@ -78,7 +78,28 @@ export const approveCertificate = createAsyncThunk(
       const generateCertificate = {  email, eventType, eventName, department,
       rpname, verID };
       await api.put( `/api/certificates/create/${ _id }`, generateCertificate );
-      sweetAlert( { text: 'Certificate generated successfully.' } );
+      sweetAlert( { text: 'Event generated successfully.' } );
+      // Dispatch fetchCertificateData to update both requests and certificates
+      await dispatch( fetchRequestsAndCertificates() );
+    } catch ( error ) {
+      sweetAlert( { title: 'Error!', text: error.response.data.error, icon: 'error' } );
+      return rejectWithValue( error.response?.data?.error );
+    }
+  }
+);
+
+// Async thunk for approving and generating a certificate
+export const adminapprove = createAsyncThunk(
+  'certificate/adminapprove',
+  async ( certificateDetails, { dispatch, rejectWithValue } ) => {
+    const { _id,  email, eventType, othereventype, eventName, department, eventcordinator,
+    targetAudience, eventVenue, otherVenue, eventobjective,
+    rpname, rpqualification, rpoccupation, rpexpertise, rpexperience, verID } = certificateDetails;
+    try {
+      const generateCertificate = {  email, eventType, eventName, department,
+      rpname, verID };
+      await api.put( `/api/certificates/create/${ _id }`, generateCertificate );
+      sweetAlert( { text: 'Event generated successfully.' } );
       // Dispatch fetchCertificateData to update both requests and certificates
       await dispatch( fetchRequestsAndCertificates() );
     } catch ( error ) {
@@ -94,7 +115,7 @@ export const rejectCertificate = createAsyncThunk(
   async ( _id, { dispatch, rejectWithValue } ) => {
     try {
       await api.delete( `/api/certificates/reject/${ _id }` );
-      sweetAlert( { text: 'Certificate request rejected.' } );
+      sweetAlert( { text: 'Event request rejected.' } );
       // Dispatch fetchRequests to update requests
       await dispatch( fetchRequests() );
     } catch ( error ) {
